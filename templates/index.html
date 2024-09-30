@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Consulta de Notas</title>
+    <script>
+        function consultarNota() {
+            const matricula = document.getElementById("matricula").value;
+            fetch("/consultar-nota", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ matricula: matricula })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.nota !== undefined) {
+                    document.getElementById("resultado").innerText = "Sua nota é: " + data.nota;
+                } else {
+                    document.getElementById("resultado").innerText = "Matrícula não encontrada.";
+                }
+            })
+            .catch(error => {
+                document.getElementById("resultado").innerText = "Erro ao consultar nota.";
+                console.error(error);
+            });
+        }
+    </script>
+</head>
+<body>
+    <h1>Consulta de Notas</h1>
+    <label for="matricula">Digite sua matrícula:</label>
+    <input type="text" id="matricula" name="matricula">
+    <button onclick="consultarNota()">Consultar Nota</button>
+    <p id="resultado"></p>
+</body>
+</html>
